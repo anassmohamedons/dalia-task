@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Email Subscription - Dalia</title>
+
+    <link rel="icon" sizes="192x192"
+        href="https://149562529.v2.pressablecdn.com/wp-content/themes/dalia-theme/img/favicons/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;0,900;1,300;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="stylesheet.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+        integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../web-component/email-subscription.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex align-items-center">
+                    <h1 class="txt-primary"><strong>Dalia task</strong></h1>
+                </div>
+                <div class="col d-flex align-items-center justify-content-center">
+                    <h3><strong>Subscribed Emails</strong></h3>
+                </div>
+                <div class="col txt-right">
+                    <button onclick="fetchEmails()">
+                        <img src="images/refresh.svg"> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="emails-container">
+            <div class="header txt-center pv-60">
+                <h1 class="txt-primary">List of all emails registered for the newsletter</h1>
+                <p class="text-count mb-20 txt-muted">Found 1 email(s)</p>
+            </div>
+
+            <div class="no-items txt-muted">
+                No emails found!
+            </div>
+
+            <div class="loading">
+                <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="items"></div>
+        </div>
+    </div>
+
+    <!-- <email-subscription></email-subscription> -->
+
+    <script>
+        const opts = {}
+        new EmailSubscription(opts)
+
+        const emailsContainer = document.querySelector('.emails-container')
+        const emailsItemsContainer = document.querySelector('.emails-container .items')
+        const textCount = document.querySelector('.text-count')
+
+        fetchEmails()
+
+        function fetchEmails() {
+            emailsContainer.className = 'emails-container'
+            fetch('http://localhost:3000/emails/')
+                .then(res => res.json())
+                .then(onSuccess)
+                .catch(onFailed)
+        }
+
+        function onSuccess(res) {
+            if (res.length > 0) {
+                emailsItemsContainer.innerHTML = res.reverse().map(email => `
+                        <div class="email-item">
+                            <a href="mailto:${email.email}">${email.email}</a>
+                            <p>${moment(email.createdAt).format('DD-MM-YYYY hh:mm A')}</p>
+                            <img src="images/copy.svg" onclick="onCopyClick('${email.email}')">
+                        </div>
+                    `).join('')
+            }
+
+            textCount.textContent = `Found ${res.length} email(s)`
+            emailsContainer.className = `emails-container ${res.length > 0 ? 'loaded' : 'no-items'}`
+        }
+
+        function onFailed() {
+            emailsItemsContainer.innerHTML = ''
+            emailsContainer.className = 'emails-container no-items'
+        }
+
+        function onCopyClick(email) {
+            navigator.clipboard.writeText(email)
+        }
+    </script>
+</body>
+
+</html>
