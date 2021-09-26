@@ -1,0 +1,17 @@
+{
+  "name": "email-subscription",
+  "version": "1.0.0",
+  "description": "",
+  "main": "email-subscription.js",
+  "scripts": {
+    "test": "jest --bail"
+  },
+  "author": "anas mohamed",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.2.2"
+  },
+  "dependencies": {
+    "@types/jest": "^27.0.2"
+  }
+}
