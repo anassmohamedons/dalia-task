@@ -26,7 +26,6 @@
     let theme = {
         primary: "#5C00F5",
         primaryDark: "#4b00c7",
-        accent: "#49BAA7",
         textLight: "white",
         textDark: "#333",
     }

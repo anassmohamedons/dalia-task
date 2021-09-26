@@ -5,7 +5,7 @@ const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
 
-const SERVER_PORT = process.env.DATABASE_URL || 3000
+const SERVER_PORT = process.env.PORT || 3000
 
 const DB_USER = process.env.DB_USER
 const DB_PASS = process.env.DB_PASS
