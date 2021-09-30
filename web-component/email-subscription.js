@@ -71,7 +71,7 @@
                 .popup-btn.open .opened { top: calc(50% - 12px); opacity: 1; }
 
                 .popup-body {
-                    position: absolute;
+                    position: fixed;
                     right: ${config.right}px;
                     bottom: ${config.btnHeight}px;
                     width: calc(100% - ${config.right * 2}px);
